@@ -5,7 +5,7 @@ import status from 'node-status';
 import config_import from './config_import';
 import run from './run';
 
-cli.enable('status');
+cli.enable('status', 'version');
 
 const {config} = cli.parse({
     config: [ 'c', 'A config file with details', 'file']
