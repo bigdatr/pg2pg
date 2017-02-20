@@ -2,9 +2,10 @@ import status from 'node-status';
 import colors from 'colors';
 
 export default async function copy(command, connections) {
-    status.setPattern(`  {spinner.line.magenta} {copy.custom.magenta}   {uptime.cyan} / {copy.count.cyan} ${'rows imported'.cyan}`);
+    const STATUS_MESSAGE = `{command.custom.magenta}   {uptime.cyan}    ${'COPIED'.cyan} {command.count.cyan} ${'rows'.cyan}`;
+    status.setPattern(`  {spinner.line.magenta} ${STATUS_MESSAGE}`);
 
-    const copyStatus = status.addItem('copy', {
+    const commandStatus = status.addItem('command', {
         custom: () => command.description
     });
 
@@ -19,12 +20,12 @@ export default async function copy(command, connections) {
         onResults: async function onResults(rows) {
             await target_database.bulkInsert(command.target_table, rows);
 
-            copyStatus.inc(rows.length);
+            commandStatus.inc(rows.length);
             command._status.importedRows = (command._status.importedRows || 0) + rows.length;
         }
     });
 
-    status.setPattern(`  ${'\u2713 '.magenta} {copy.custom.magenta}   {uptime.cyan} / {copy.count.cyan} ${'rows imported'.cyan}`);
+    status.setPattern(`  ${'\u2713 '.magenta} ${STATUS_MESSAGE}`);
     status.stamp();
-    status.removeItem(copyStatus);
+    status.removeItem(commandStatus);
 }

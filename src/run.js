@@ -7,7 +7,8 @@ import {connectAll, disconnectAll} from './config_connections';
 
 // Commands
 const COMMANDS = {
-    copy: require('./commands/copy')
+    copy: require('./commands/copy'),
+    query: require('./commands/query')
 };
 
 export default async function run(config) {
@@ -30,6 +31,11 @@ async function runCommands(commands, connections) {
 
     for (var i = 0; i < commands.length; i++) {
         const c = commands[i];
+
+        if (!COMMANDS[c.type]) {
+            cli.fatal(`Command type \`${c.type}\` is not supported`);
+        }
+
         const fn = COMMANDS[c.type].default;
 
         await fn(c, connections);

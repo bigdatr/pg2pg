@@ -32,6 +32,16 @@ export default class PostgresConnector extends BaseConnector {
         });
     }
 
+    async query(sql, params) {
+        return new Promise((resolve, reject) => {
+            this._client.query(sql, params || [], (err, result) => {
+                if (err) { return reject(err); }
+
+                return resolve(result);
+            });
+        });
+    }
+
     async queryWithCursor(options) {
         return new Promise((resolve, reject) => {
             if (!this._client) {
