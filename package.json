@@ -1,32 +1,32 @@
 {
-    "name": "pg2pg",
-    "description": "A cli tool to make copying between Postgres (and also Amazon Redshift) servers a little easier",
-    "version": "1.0.1",
-    "main": "index.js",
-    "author": "Atridge D'Costa",
-    "license": "MIT",
-    "bin": {
-        "pg2pg": "./index.js"
-    },
-    "scripts": {
-        "build": "rm -rf lib && NODE_ENV=production babel src --out-dir lib",
-        "watch": "NODE_ENV=production babel src --watch --out-dir lib"
-    },
-    "dependencies": {
-        "babel-cli": "^6.23.0",
-        "babel-plugin-inline-import": "^2.0.4",
-        "babel-plugin-transform-class-properties": "^6.19.0",
-        "babel-plugin-transform-runtime": "^6.15.0",
-        "babel-preset-blueflag": "^0.0.1",
-        "babel-preset-es2016": "^6.16.0",
-        "babel-preset-es2017": "^6.16.0",
-        "babel-preset-stage-3": "^6.17.0",
-        "babel-register": "^6.22.0",
-        "babel-runtime": "^6.20.0",
-        "cli": "^1.0.1",
-        "colors": "^1.1.2",
-        "node-status": "^1.0.0",
-        "pg": "^6.1.2",
-        "pg-cursor": "^1.0.1"
-    }
+  "name": "pg2pg",
+  "description": "A cli tool to make copying between Postgres (and also Amazon Redshift) servers a little easier",
+  "version": "1.0.2",
+  "main": "index.js",
+  "author": "Atridge D'Costa",
+  "license": "MIT",
+  "bin": {
+    "pg2pg": "./index.js"
+  },
+  "scripts": {
+    "build": "rm -rf lib && NODE_ENV=production babel src --out-dir lib",
+    "watch": "NODE_ENV=production babel src --watch --out-dir lib"
+  },
+  "dependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-plugin-inline-import": "^2.0.4",
+    "babel-plugin-transform-class-properties": "^6.19.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-blueflag": "^0.0.1",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-es2017": "^6.16.0",
+    "babel-preset-stage-3": "^6.17.0",
+    "babel-register": "^6.22.0",
+    "babel-runtime": "^6.20.0",
+    "cli": "^1.0.1",
+    "colors": "^1.1.2",
+    "node-status": "^1.0.0",
+    "pg": "^6.1.2",
+    "pg-cursor": "^1.0.1"
+  }
 }
