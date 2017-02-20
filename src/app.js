@@ -1,5 +1,6 @@
 import cli from 'cli';
 import colors from 'colors';
+import status from 'node-status';
 
 import config_import from './config_import';
 import run from './run';
@@ -32,6 +33,8 @@ async function importAndRun(path) {
 
         console.log('----------------------------------'.magenta);
         console.log(`Total Duration: ${seconds}s`.magenta);
+
+        process.exit(0);
     } catch (err) {
         cli.fatal(err.message || err);
     }

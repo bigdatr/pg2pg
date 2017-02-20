@@ -11,8 +11,7 @@ export default function config_validate(config) {
 function ensureProps(obj) {
     const requiredProps = [
         'schema_version',
-        'source',
-        'target',
+        'refs',
         'commands'
     ];
 
@@ -20,5 +19,8 @@ function ensureProps(obj) {
 
     if (missingProps.length > 0) {
         throw new Error(`Config is missing '${missingProps.join(', ')}'`)
+    }
+    else if (obj.schema_version !== 1.1) {
+        throw new Error(`This version of pg2pg only supports schema_version 1.1. Your schema_version is ${obj.schema_version}`)
     }
 }
