@@ -1,4 +1,3 @@
-import * as postgres from './db/postgres';
 import PostgresConnector from './connectors/PostgresConnector';
 
 const CONNECTORS = {

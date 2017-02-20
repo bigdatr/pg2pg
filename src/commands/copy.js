@@ -1,6 +1,5 @@
 import status from 'node-status';
 import colors from 'colors';
-import {getToken} from '../utils';
 
 export default async function copy(command, connections) {
     status.setPattern(`  {spinner.line.magenta} {copy.custom.magenta}   {uptime.cyan} / {copy.count.cyan} ${'rows imported'.cyan}`);
@@ -11,8 +10,8 @@ export default async function copy(command, connections) {
 
     command._status = {};
 
-    const source_database = connections[getToken(command.source_database)].connection;
-    const target_database = connections[getToken(command.target_database)].connection;
+    const source_database = connections[command.source_database].connection;
+    const target_database = connections[command.target_database].connection;
 
     await source_database.queryWithCursor({
         query: command.source_query,
