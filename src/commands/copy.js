@@ -1,7 +1,7 @@
 import status from 'node-status';
 import colors from 'colors';
 
-export default async function copy(command, connections) {
+export default async function copy(command, connections, config) {
     const STATUS_MESSAGE = `{command.custom.magenta}   {uptime.cyan}    ${'COPIED'.cyan} {command.count.cyan} ${'rows'.cyan}`;
     status.setPattern(`  {spinner.line.magenta} ${STATUS_MESSAGE}`);
 
@@ -24,6 +24,7 @@ export default async function copy(command, connections) {
     await source_database.queryWithCursor({
         query: command.source_query,
         batchSize: command.batchSize,
+        params: config.queryParams,
         onResults: async function onResults(rows) {
             await target_database.bulkInsert(command.target_table, rows);
 

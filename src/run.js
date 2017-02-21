@@ -20,7 +20,7 @@ export default async function run(config) {
 
         const notifications = new Notifications(config, connections);
 
-        await runCommands(config.commands, connections);
+        await runCommands(config.commands, connections, config);
 
         await notifications.send('success');
 
@@ -32,7 +32,7 @@ export default async function run(config) {
     }
 }
 
-async function runCommands(commands, connections) {
+async function runCommands(commands, connections, config) {
     // Init status bar
     status.start({pattern: '.'});
 
@@ -45,7 +45,7 @@ async function runCommands(commands, connections) {
 
         const fn = COMMANDS[c.type].default;
 
-        await fn(c, connections);
+        await fn(c, connections, config);
     }
 
     status.clear();

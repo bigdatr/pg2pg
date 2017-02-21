@@ -32,14 +32,37 @@ export default class PostgresConnector extends BaseConnector {
         });
     }
 
-    async query(sql, params) {
+    async query(query, params) {
         return new Promise((resolve, reject) => {
-            this._client.query(sql, params || [], (err, result) => {
+            const sql = this.toSQL(query, params);
+
+            this._client.query(sql.query, sql.params, (err, result) => {
                 if (err) { return reject(err); }
 
                 return resolve(result);
             });
         });
+    }
+
+    toSQL(query, params = {}) {
+        const paramsArray = Object.keys(params).map((p) => params[p]);
+        const paramsMap = Object.keys(params)
+                            .map((p, i) => ({[p]: i + 1}))
+                            .reduce((state, val) => Object.assign(state, val), {})
+
+        let nextQuery = query;
+
+        Object.keys(params).forEach((p) => {
+            const index = paramsMap[p];
+            const placeholder = `$${index}`;
+            const token = '${' + p + '}';
+            nextQuery = nextQuery.replace(token, placeholder);
+        });
+
+        return {
+            query: nextQuery,
+            params: paramsArray
+        }
     }
 
     async queryWithCursor(options) {
@@ -57,12 +80,13 @@ export default class PostgresConnector extends BaseConnector {
                 return reject(new Error('Missing `onResults` in options'));
             }
 
-            const {query, onResults} = options;
+            const {query, onResults, params} = options;
             let {batchSize} = options;
 
             batchSize = batchSize || DEFAULT_BATCH_SIZE;
 
-            const cursor = this._client.query(new Cursor(query));
+            const sql = this.toSQL(query, params);
+            const cursor = this._client.query(new Cursor(sql.query, sql.params));
 
             // Read in a function that can be called recursively
             function _readFromCursor() {
