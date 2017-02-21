@@ -1,3 +1,4 @@
+import cli from 'cli';
 import PostgresConnector from './connectors/PostgresConnector';
 import HipChatConnector from './connectors/HipChatConnector';
 
@@ -8,6 +9,8 @@ const CONNECTORS = {
 };
 
 export async function connectAll(config) {
+    cli.debug('Connecting to all services');
+
     const {refs} = config;
 
     const connections = Object.keys(refs)

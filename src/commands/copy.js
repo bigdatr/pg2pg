@@ -11,6 +11,13 @@ export default async function copy(command, connections) {
 
     command._status = {};
 
+    if (!connections[command.source_database]) {
+        throw new Error(`Cannot find connection for ${command.source_database}`);
+    }
+    else if (!connections[command.target_database]) {
+        throw new Error(`Cannot find connection for ${command.target_database}`);
+    }
+
     const source_database = connections[command.source_database].connection;
     const target_database = connections[command.target_database].connection;
 
