@@ -75,30 +75,18 @@ export default class PostgresConnector extends BaseConnector {
                     }
                     else if(rows.length === 0) {
                         cli.debug('No more rows to read');
+                        cursor.close();
                         return resolve();
                     }
 
-                    const cursorIsSupportedByDB = rows.length <= batchSize;
+                    cli.debug('Using Postgres cursor to batch copy ' + rows.length);
 
-                    cli.debug('Processing results ' + rows.length);
-
-                    if (cursorIsSupportedByDB) {
-                        cli.debug('Using Postgres cursor to batch copy');
-
-                        try {
-                            await onResults(rows);
-                            _readFromCursor();
-                        } catch (onResults_err) {
-                            cli.fatal(onResults_err.message)
-                        }
+                    try {
+                        await onResults(rows);
+                        _readFromCursor();
+                    } catch (onResults_err) {
+                        cli.fatal(onResults_err.message)
                     }
-                    else {
-                        // Most likely connected to redshift
-                        cli.debug('Cursor not supported by database. Fetching All. This may cause issues for large amounts of data.');
-                        await _batchAndProcess(batchSize, rows, onResults);
-                        return resolve();
-                    }
-
                 });
             }
 

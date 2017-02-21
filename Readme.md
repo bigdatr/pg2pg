@@ -25,6 +25,7 @@ NOTE: The table must exist in the target db.
     "schema_version": 1.1,
     "refs": {
         "some_postgres_db": {
+            "type": "postgres",
             "host": "",
             "database": "",
             "user": "",
@@ -32,6 +33,7 @@ NOTE: The table must exist in the target db.
             "port": 5432
         },
         "some_redshift_db": {
+            "type": "redshift",
             "host": "",
             "database": "",
             "user": "",

@@ -4,6 +4,7 @@ import colors from 'colors';
 
 import config_validate from './config_validate';
 import {connectAll, disconnectAll} from './config_connections';
+import Notifications from './classes/Notifications';
 
 // Commands
 const COMMANDS = {
@@ -14,12 +15,18 @@ const COMMANDS = {
 export default async function run(config) {
     try {
         await config_validate(config);
+
         const connections = await connectAll(config);
+
+        const notifications = new Notifications(config, connections);
 
         await runCommands(config.commands, connections);
 
+        notifications.send('success');
+
         await disconnectAll(connections);
     } catch (err) {
+        notifications.send('fail');
         cli.fatal(err.message || err);
         process.exit(1);
     }

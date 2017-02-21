@@ -1517,6 +1517,10 @@ pg-connection-string@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-0.1.3.tgz#da1847b20940e42ee1492beaf65d49d91b245df7"
 
+pg-copy-streams@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/pg-copy-streams/-/pg-copy-streams-1.2.0.tgz#7b3f9dee0b6c5fc2068f59c40fa218e0c1d74249"
+
 pg-cursor@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/pg-cursor/-/pg-cursor-1.0.1.tgz#928d2e813a17d16ecb90e14bb0b941eeeb88cd25"

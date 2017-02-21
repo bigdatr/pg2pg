@@ -1,10 +1,11 @@
 import cli from 'cli';
 import PostgresConnector from './connectors/PostgresConnector';
+import RedshiftConnector from './connectors/RedshiftConnector';
 import HipChatConnector from './connectors/HipChatConnector';
 
 const CONNECTORS = {
     postgres: PostgresConnector,
-    redshift: PostgresConnector,
+    redshift: RedshiftConnector,
     hipchat: HipChatConnector
 };
 
