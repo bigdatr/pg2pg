@@ -1,8 +1,10 @@
 import PostgresConnector from './connectors/PostgresConnector';
+import HipChatConnector from './connectors/HipChatConnector';
 
 const CONNECTORS = {
     postgres: PostgresConnector,
-    redshift: PostgresConnector
+    redshift: PostgresConnector,
+    hipchat: HipChatConnector
 };
 
 export async function connectAll(config) {
