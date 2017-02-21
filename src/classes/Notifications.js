@@ -14,7 +14,6 @@ export default class Notifications {
 
         try {
             await service.send(n);
-            console.log('asdkjhasjdhakjsdhkjasd');
         } catch (err) {
             console.log(err.stack);
         }

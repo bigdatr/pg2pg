@@ -22,11 +22,11 @@ export default async function run(config) {
 
         await runCommands(config.commands, connections);
 
-        notifications.send('success');
+        await notifications.send('success');
 
         await disconnectAll(connections);
     } catch (err) {
-        notifications.send('fail');
+        await notifications.send('fail');
         cli.fatal(err.message || err);
         process.exit(1);
     }
