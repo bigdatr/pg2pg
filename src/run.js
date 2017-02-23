@@ -15,18 +15,16 @@ const COMMANDS = {
 export default async function run(config) {
     try {
         await config_validate(config);
-
         const connections = await connectAll(config);
 
         const notifications = new Notifications(config, connections);
 
         await runCommands(config.commands, connections, config);
-
         await notifications.send('success');
 
         await disconnectAll(connections);
     } catch (err) {
-        await notifications.send('fail');
+        // await notifications.send('fail');
         cli.fatal(err.message || err);
         process.exit(1);
     }
