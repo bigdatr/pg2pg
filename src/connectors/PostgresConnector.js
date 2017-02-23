@@ -35,11 +35,10 @@ export default class PostgresConnector extends BaseConnector {
     async query(query, params) {
         return new Promise((resolve, reject) => {
             const sql = this.toSQL(query, params);
-
             this._client.query(sql.query, sql.params, (err, result) => {
                 if (err) { return reject(err); }
 
-                return resolve(result);
+                return resolve(result.rows);
             });
         });
     }
