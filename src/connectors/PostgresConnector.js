@@ -35,8 +35,11 @@ export default class PostgresConnector extends BaseConnector {
     async query(query, params) {
         return new Promise((resolve, reject) => {
             const sql = this.toSQL(query, params);
+
             this._client.query(sql.query, sql.params, (err, result) => {
-                if (err) { return reject(err); }
+                if (err) {
+                  cli.fatal(err.stack);
+                  return reject(err); }
 
                 return resolve(result.rows);
             });
@@ -55,6 +58,7 @@ export default class PostgresConnector extends BaseConnector {
             const index = paramsMap[p];
             const placeholder = `$${index}`;
             const token = '${' + p + '}';
+
             nextQuery = nextQuery.replace(token, placeholder);
         });
 

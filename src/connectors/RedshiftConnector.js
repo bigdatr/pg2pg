@@ -21,12 +21,11 @@ export default class RedshiftConnector extends PostgresConnector {
                 return reject(new Error('Missing `onResults` in options'));
             }
 
-            const {query, onResults} = options;
+            const {query, params, onResults} = options;
             let {batchSize} = options;
 
             batchSize = batchSize || DEFAULT_BATCH_SIZE;
-
-            const rows = await this.query(query);
+            const rows = await this.query(query, params);
             await _batchAndProcess(batchSize, rows, onResults);
             resolve();
         });
