@@ -72,7 +72,8 @@ batchSize <number> - (optional. Default 1000) The number of rows to batch insert
     "source_database": "some_redshift_db",
     "source_query": "SELECT * FROM users",
     "target_database": "some_postgres_db",
-    "target_table": "users"
+    "target_table": "users",
+    "bathSize" : 1000
 }
 ```
 
@@ -87,5 +88,16 @@ query_file <string>: Path to a file that contains the `query`
     "description": "Clear all existing users",
     "database": "some_postgres_db",
     "query": "DELETE FROM users"
+}
+```
+
+### queryParams
+queryParams are used to substitute a variable into your query at execution time. `queryParams` : `value_to_pass`
+
+```js
+"queryParams": 
+{
+      "start_date": "2016-01-01",
+      "end_date": "2017-01-01"
 }
 ```
