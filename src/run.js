@@ -25,7 +25,7 @@ export default async function run(config) {
         await disconnectAll(connections);
     } catch (err) {
         // await notifications.send('fail');
-        cli.fatal(err.message || err);
+        cli.fatal(err.stack || err);
         process.exit(1);
     }
 }

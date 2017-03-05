@@ -36,7 +36,7 @@ async function importAndRun(path) {
 
         process.exit(0);
     } catch (err) {
-        cli.fatal(err.message || err);
+        cli.fatal(err.stack || err);
     }
 }
 

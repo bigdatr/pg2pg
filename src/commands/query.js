@@ -11,6 +11,10 @@ export default async function query(command, connections) {
 
     command._status = {};
 
+    if (!connections[command.database]) {
+        throw new Error(`Could not find database '${command.database}' in refs. Please check command '${command.description}'`);
+    }
+
     const database = connections[command.database].connection;
 
     const result = await database.query(command.query);
