@@ -19,7 +19,7 @@ export default async function run(config) {
 
         const notifications = new Notifications(config, connections);
 
-        await runCommands(config.commands, connections, config);
+        await runCommands(config.commands, connections, config, notifications);
         await notifications.send('success');
 
         await disconnectAll(connections);
@@ -30,7 +30,7 @@ export default async function run(config) {
     }
 }
 
-async function runCommands(commands, connections, config) {
+async function runCommands(commands, connections, config, notifications) {
     // Init status bar
     status.start({pattern: '.'});
 
@@ -43,10 +43,19 @@ async function runCommands(commands, connections, config) {
 
         const fn = COMMANDS[c.type].default;
 
+        // Run command
         await fn(c, connections, config);
+
+        // Run success notification
+        notifications.send('successCommand' + (i + 1), {command: c});
+        notifications.send('successAfterEachCommand', {command: c});
     }
 
     status.clear();
     status.removeAll();
     status.stop();
+}
+
+async function successNotification() {
+
 }
