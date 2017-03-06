@@ -36,6 +36,9 @@ export default class PostgresConnector extends BaseConnector {
         return new Promise((resolve, reject) => {
             const sql = this.toSQL(query, params);
 
+            cli.debug(sql.query)
+            cli.debug(sql.params)
+
             this._client.query(sql.query, sql.params, (err, result) => {
                 if (err) {
                   cli.fatal(err.stack);
