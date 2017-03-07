@@ -1,7 +1,7 @@
 import status from 'node-status';
 import colors from 'colors';
 
-export default async function query(command, connections, config) {
+export default async function query(command, connections, queryParams) {
     const STATUS_MESSAGE = `{command.custom.magenta}   {uptime.cyan}`;
     status.setPattern(`  {spinner.line.magenta} ${STATUS_MESSAGE}`);
 
@@ -17,7 +17,7 @@ export default async function query(command, connections, config) {
 
     const database = connections[command.database].connection;
 
-    const result = await database.query(command.query, config.queryParams);
+    const result = await database.query(command.query, queryParams);
 
     let STATUS_MESSAGE_SUFFIX = '';
 

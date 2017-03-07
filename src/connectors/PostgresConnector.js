@@ -36,8 +36,13 @@ export default class PostgresConnector extends BaseConnector {
         return new Promise((resolve, reject) => {
             const sql = this.toSQL(query, params);
 
-            cli.debug(sql.query)
-            cli.debug(sql.params)
+            cli.debug(`
+                QUERY:
+                    ${sql.query}
+
+                PARAMS:
+                    ${JSON.stringify(sql.params)}
+            `);
 
             this._client.query(sql.query, sql.params, (err, result) => {
                 if (err) {
@@ -50,20 +55,30 @@ export default class PostgresConnector extends BaseConnector {
     }
 
     toSQL(query, params = {}) {
-        const paramsArray = Object.keys(params).map((p) => params[p]);
-        const paramsMap = Object.keys(params)
+        const usedParams = Object.keys(params)
+                            .filter((p) => query.indexOf('${' + p + '}') !== -1)
+                            .reduce((state, val) => Object.assign(state, {[val]: params[val]}), {});
+
+        const paramsArray = Object.keys(usedParams).map((p) => usedParams[p]);
+        const paramsMap = Object.keys(usedParams)
                             .map((p, i) => ({[p]: i + 1}))
                             .reduce((state, val) => Object.assign(state, val), {})
 
         let nextQuery = query;
 
-        Object.keys(params).forEach((p) => {
+        Object.keys(usedParams).forEach((p) => {
             const index = paramsMap[p];
             const placeholder = `$${index}`;
             const token = '${' + p + '}';
 
             nextQuery = nextQuery.replace(token, placeholder);
         });
+
+        if (nextQuery.indexOf('${') !== -1) {
+            throw new Error(`Your query contains params which are not listed in queryParams.
+                ${nextQuery}
+                ${JSON.stringify(params)}`);
+        }
 
         return {
             query: nextQuery,
