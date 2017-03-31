@@ -22,11 +22,13 @@ console.log('----------------------------------');
 console.log(' PG2PG Lambda');
 console.log('----------------------------------');
 
+console.time('pg2pg');
 config_import(config)
     .then(c => send(c))
     .then(resp => {
         if (typeof resp === 'object') {
             console.log(JSON.stringify(resp, null, 4));
+            console.timeEnd('pg2pg');
         } else {
             console.log(resp);
         }
