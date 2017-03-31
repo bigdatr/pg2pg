@@ -24,24 +24,40 @@ console.log('----------------------------------');
 
 config_import(config)
     .then(c => send(c))
-    .then(resp => console.log(JSON.parse(resp)))
+    .then(resp => {
+        if (typeof resp === 'object') {
+            console.log(JSON.stringify(resp, null, 4));
+        } else {
+            console.log(resp);
+        }
+    })
     .catch(err => {
         console.log(err);
     });
 
 function send(conf) {
     return new Promise((resolve, reject) => {
-        const uri = `${hostname}?query=${encodeURIComponent(JSON.stringify(conf))}`;
+        const options = {
+            // uri: `${hostname}?query=${encodeURIComponent(JSON.stringify(conf))}`,
+            uri: hostname,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            json: true,
+            body: {
+                query: conf
+            }
+        };
 
-        request(uri, (err, res, body) => {
+        request(options, (err, res, body) => {
             if (err) {
                 return reject(err);
             } else if (res.statusCode >= 400) {
-                const b = body ? JSON.parse(body) : { message: body };
+                console.log(body);
+
                 return reject(
-                    new Error(
-                        `[${res.statusCode}] ${res.statusMessage} - ${b.message}`
-                    )
+                    new Error(`[${res.statusCode}] ${res.statusMessage}`)
                 );
             }
 
