@@ -50,7 +50,7 @@ function send(conf) {
             body: {
                 query: conf
             },
-            timeout: 6 * 60 * 1000
+            timeout: 120 * 1000
         };
 
         request(options, (err, res, body) => {
