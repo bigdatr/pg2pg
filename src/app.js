@@ -1,14 +1,12 @@
 import cli from 'cli';
-import colors from 'colors';
-import status from 'node-status';
 
 import config_import from './config_import';
 import run from './run';
 
 cli.enable('status');
 
-const {config} = cli.parse({
-    config: [ 'c', 'A config file with details', 'file']
+const { config } = cli.parse({
+    config: ['c', 'A config file with details', 'file']
 });
 
 if (!config) {
@@ -19,9 +17,9 @@ if (!config) {
 async function importAndRun(path) {
     const startTime = new Date();
 
-    console.log('----------------------------------'.magenta);
-    console.log(' PG2PG'.magenta);
-    console.log('----------------------------------'.magenta);
+    console.log('----------------------------------');
+    console.log(' PG2PG');
+    console.log('----------------------------------');
 
     try {
         const c = await config_import(path);
@@ -31,8 +29,8 @@ async function importAndRun(path) {
         const duration = new Date() - startTime;
         const seconds = Math.round(duration / 100) / 10;
 
-        console.log('----------------------------------'.magenta);
-        console.log(`Total Duration: ${seconds}s`.magenta);
+        console.log('----------------------------------');
+        console.log(`Total Duration: ${seconds}s`);
 
         process.exit(0);
     } catch (err) {

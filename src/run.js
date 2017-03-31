@@ -1,9 +1,7 @@
 import cli from 'cli';
-import status from 'node-status';
-import colors from 'colors';
 
 import config_validate from './config_validate';
-import {connectAll, disconnectAll} from './config_connections';
+import { connectAll, disconnectAll } from './config_connections';
 import Notifications from './classes/Notifications';
 
 // Commands
@@ -12,14 +10,18 @@ const COMMANDS = {
     query: require('./commands/query')
 };
 
-export default async function run(config) {
+export default (async function run(config) {
     try {
         await config_validate(config);
         const connections = await connectAll(config);
 
         const notifications = new Notifications(config, connections);
 
-        await runCommandsForEachQueryParamsObject(config, connections, notifications);
+        await runCommandsForEachQueryParamsObject(
+            config,
+            connections,
+            notifications
+        );
         await notifications.send('success');
 
         await disconnectAll(connections);
@@ -28,29 +30,30 @@ export default async function run(config) {
         cli.fatal(err.stack || err);
         process.exit(1);
     }
-}
+});
 
-async function runCommandsForEachQueryParamsObject(config, connections, notifications) {
+async function runCommandsForEachQueryParamsObject(
+    config,
+    connections,
+    notifications
+) {
     let queryParams = config.queryParams;
 
     if (!queryParams || queryParams.length === 0) {
         queryParams = [{}];
         cli.debug(`Found no queryParams`);
-    }
-    else {
+    } else {
         cli.debug(`Found ${queryParams.length} queryParams to execute`);
     }
 
-    // Init status bar
-    status.start({pattern: '.'});
-
     for (var i = 0; i < queryParams.length; i++) {
-        await runCommands(config.commands, connections, queryParams[i], notifications);
+        await runCommands(
+            config.commands,
+            connections,
+            queryParams[i],
+            notifications
+        );
     }
-
-    status.clear();
-    status.removeAll();
-    status.stop();
 }
 
 async function runCommands(commands, connections, queryParams, notifications) {
@@ -68,11 +71,9 @@ async function runCommands(commands, connections, queryParams, notifications) {
         await fn(c, connections, queryParams);
 
         // Run success notification
-        notifications.send('successCommand' + (i + 1), {command: c});
-        notifications.send('successAfterEachCommand', {command: c});
+        notifications.send('successCommand' + (i + 1), { command: c });
+        notifications.send('successAfterEachCommand', { command: c });
     }
 }
 
-async function successNotification() {
-
-}
+async function successNotification() {}
