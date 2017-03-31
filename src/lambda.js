@@ -49,7 +49,8 @@ function send(conf) {
             json: true,
             body: {
                 query: conf
-            }
+            },
+            timeout: 6 * 60 * 1000
         };
 
         request(options, (err, res, body) => {
